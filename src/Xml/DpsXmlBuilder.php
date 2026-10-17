@@ -345,7 +345,7 @@ class DpsXmlBuilder
             $trib->appendChild($tribMun);
 
             $hasPiscofins = $data->tributacao->cstPisCofins !== null;
-            $hasRetencoesFed = $data->tributacao->valorRetidoIrrf !== null || $data->tributacao->valorRetidoCsll !== null;
+            $hasRetencoesFed = $data->tributacao->valorRetidoCp !== null || $data->tributacao->valorRetidoIrrf !== null || $data->tributacao->valorRetidoCsll !== null;
 
             if ($hasPiscofins || $hasRetencoesFed) {
                 $tribFed = $this->dom->createElement('tribFed');
@@ -362,9 +362,9 @@ class DpsXmlBuilder
                     $tribFed->appendChild($piscofins);
                 }
 
+                $this->appendElement($tribFed, 'vRetCP', $data->tributacao->valorRetidoCp !== null ? number_format($data->tributacao->valorRetidoCp, 2, '.', '') : null);
                 $this->appendElement($tribFed, 'vRetIRRF', $data->tributacao->valorRetidoIrrf !== null ? number_format($data->tributacao->valorRetidoIrrf, 2, '.', '') : null);
                 $this->appendElement($tribFed, 'vRetCSLL', $data->tributacao->valorRetidoCsll !== null ? number_format($data->tributacao->valorRetidoCsll, 2, '.', '') : null);
-                $this->appendElement($tribFed, 'vRetContPrev', null); // Placeholder if needed in future
 
                 $trib->appendChild($tribFed);
             }

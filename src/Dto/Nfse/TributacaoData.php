@@ -130,6 +130,12 @@ class TributacaoData extends Dto
     public ?TipoRetencaoPisCofins $tipoRetencaoPisCofins = null;
 
     /**
+     * Valor retido da contribuição previdenciária - INSS (R$).
+     */
+    #[MapFrom('tribFed.vRetCP')]
+    public ?float $valorRetidoCp = null;
+
+    /**
      * Valor retido de IRRF (R$).
      */
     #[MapFrom('tribFed.vRetIRRF')]
