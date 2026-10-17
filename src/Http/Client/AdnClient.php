@@ -307,8 +307,10 @@ class AdnClient implements AdnDanfseInterface
     private function handleException(\GuzzleHttp\Exception\RequestException|\Exception $e)
     {
         $responseBody = '';
-        if ($e->hasResponse()) {
-            $responseBody = $e->getResponse()->getBody()->getContents();
+        // Guzzle 7: getResponse() pode ser nulo (hasResponse). Guzzle 8: removeu hasResponse().
+        $resposta = method_exists($e, 'getResponse') ? $e->getResponse() : null;
+        if ($resposta !== null) {
+            $responseBody = (string) $resposta->getBody();
         }
 
         $parsedErrors = [];
