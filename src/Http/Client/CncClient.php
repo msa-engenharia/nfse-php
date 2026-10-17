@@ -152,8 +152,9 @@ class CncClient
     private function handleException(\Exception|GuzzleException $e)
     {
         $errorBody = '';
-        if ($e instanceof \GuzzleHttp\Exception\RequestException && $e->hasResponse()) {
-            $errorBody = $e->getResponse()->getBody()->getContents();
+        $resposta = method_exists($e, 'getResponse') ? $e->getResponse() : null;
+        if ($resposta !== null) {
+            $errorBody = (string) $resposta->getBody();
         }
 
         $parsedErrors = [];
