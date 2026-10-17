@@ -100,6 +100,7 @@ it('can build xml with complex structures', function () {
                     'tribFed.piscofins.vPis' => 6.5,
                     'tribFed.piscofins.vCofins' => 30.0,
                     'tribFed.piscofins.tpRetPisCofins' => 1,
+                    'tribFed.vRetCP' => 110.0,
                     'tribFed.vRetIRRF' => 15.0,
                     'tribFed.vRetCSLL' => 10.0,
                     'totTrib.vTotTrib.vTotTribFed' => 50.0,
@@ -124,8 +125,11 @@ it('can build xml with complex structures', function () {
         ->and($xml)->toContain('<vDedRed>')
         ->and($xml)->toContain('<documentos>')
         ->and($xml)->toContain('<piscofins>')
+        ->and($xml)->toContain('<vRetCP>110.00</vRetCP>')
         ->and($xml)->toContain('<vRetIRRF>15.00</vRetIRRF>')
         ->and($xml)->toContain('<vRetCSLL>10.00</vRetCSLL>')
+        // Ordem do XSD (TCTribFederal): piscofins, vRetCP, vRetIRRF, vRetCSLL.
+        ->and(strpos($xml, '<vRetCP>'))->toBeLessThan(strpos($xml, '<vRetIRRF>'))
         ->and($xml)->toContain('<vTotTribFed>50.00</vTotTribFed>');
 });
 
