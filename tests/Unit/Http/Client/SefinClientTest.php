@@ -195,4 +195,18 @@ class SefinClientTest extends TestCase
         $this->expectExceptionMessage('Resposta inválida da API');
         $client->emitirNfse('payload');
     }
+
+    public function test_request_error_preserves_response_body()
+    {
+        $client = $this->createClientWithMock([
+            new Response(400, [], '{"erros":[{"codigo":"E400","descricao":"Inválido"}]}'),
+        ]);
+
+        try {
+            $client->emitirNfse('payload');
+            $this->fail('Esperava NfseApiException.');
+        } catch (\Nfse\Http\Exceptions\NfseApiException $e) {
+            $this->assertStringContainsString('E400', (string) $e->getRawResponse());
+        }
+    }
 }

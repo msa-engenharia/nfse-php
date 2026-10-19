@@ -97,4 +97,18 @@ class CncClientTest extends TestCase
         $this->expectExceptionMessage('Resposta inválida (não é JSON)');
         $client->consultarContribuinte('123');
     }
+
+    public function test_request_error_preserves_response_body()
+    {
+        $client = $this->createClientWithMock([
+            new Response(400, [], '{"erros":[{"codigo":"E400","descricao":"Inválido"}]}'),
+        ]);
+
+        try {
+            $client->consultarContribuinte('123');
+            $this->fail('Esperava NfseApiException.');
+        } catch (NfseApiException $e) {
+            $this->assertStringContainsString('E400', (string) $e->getRawResponse());
+        }
+    }
 }
